@@ -1,6 +1,7 @@
 import { comparePassword, signToken } from "@/lib/auth";
 import connectDB from "@/lib/mongodb";
 import User from "@/models/User";
+import { triggerAsyncId } from "async_hooks";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -53,7 +54,7 @@ export async function POST(req: NextRequest) {
       name: user.name,
     });
 
-    return NextResponse.json(
+    const response = NextResponse.json(
       {
         success: true,
         message: "Login Successfull",
@@ -66,6 +67,13 @@ export async function POST(req: NextRequest) {
       },
       { status: 200 },
     );
+    response.cookies.set("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    });
+    return response;
   } catch (err) {
     return NextResponse.json(
       {

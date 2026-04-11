@@ -95,24 +95,27 @@ export async function POST(req: NextRequest) {
       name: user.name,
     });
 
-    return NextResponse.json(
-      {
-        success: true,
-        message: "Account Created Successfully",
-        token,
-        user: {
-          id: user._id,
-          name: user.name,
-          email: user.email,
-        },
-      },
-      {
-        status: 201,
-      },
-    );
+const response = NextResponse.json({ 
+  success: true,
+  user: {
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    experienceLevel: user.experienceLevel,
+    knownConcepts: user.knownConcepts,
+  }
+})  
+
+response.cookies.set("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    });
+    return response;
   } catch (err) {
     console.log(err);
-    return NextResponse.json(
+    return NextResponse.json( 
       {
         success: false,
         message: "Something went wrong, Please try again",

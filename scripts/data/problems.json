@@ -1,0 +1,1068 @@
+[
+  {
+    "title": "Set Matrix Zeroes",
+    "slug": "set-matrix-zeroes",
+    "difficulty": "medium",
+    "topic": "Arrays",
+    "topicOrder": 1,
+    "problemOrder": 1,
+    "description": "Given an m x n integer matrix, if an element is 0, set its entire row and column to 0. You must perform this operation in-place. Input: M and N, followed by matrix rows.",
+    "examples": [
+      "Input: matrix = [[1,1,1],[1,0,1],[1,1,1]] → Output: [[1,0,1],[0,0,0],[1,0,1]]"
+    ],
+    "constraints": ["1 <= m, n <= 200"],
+    "pattern": "other",
+    "leetcodeUrl": "https://leetcode.com/problems/set-matrix-zeroes/",
+    "testCases": [
+      {
+        "input": "3 3\n1 1 1\n1 0 1\n1 1 1",
+        "expectedOutput": "1 0 1\n0 0 0\n1 0 1",
+        "isHidden": false
+      },
+      {
+        "input": "2 2\n0 1\n1 1",
+        "expectedOutput": "0 0\n0 1",
+        "isHidden": true
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Pascal's Triangle",
+    "slug": "pascals-triangle",
+    "difficulty": "easy",
+    "topic": "Arrays",
+    "topicOrder": 1,
+    "problemOrder": 2,
+    "description": "Generate the first N rows of Pascal's triangle. Input: Integer N.",
+    "examples": [
+      "Input: n = 5 → Output: [[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]"
+    ],
+    "constraints": ["1 <= n <= 30"],
+    "pattern": "dynamic programming",
+    "leetcodeUrl": "https://leetcode.com/problems/pascals-triangle/",
+    "testCases": [
+      {
+        "input": "5",
+        "expectedOutput": "[[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]",
+        "isHidden": false
+      },
+      { "input": "1", "expectedOutput": "[[1]]", "isHidden": true }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Next Permutation",
+    "slug": "next-permutation",
+    "difficulty": "medium",
+    "topic": "Arrays",
+    "topicOrder": 1,
+    "problemOrder": 3,
+    "description": "Find the lexicographically next greater permutation. Input: N, then N integers.",
+    "examples": ["Input: nums = [1,2,3] → Output: [1,3,2]"],
+    "constraints": ["1 <= n <= 100"],
+    "pattern": "other",
+    "leetcodeUrl": "https://leetcode.com/problems/next-permutation/",
+    "testCases": [
+      { "input": "3\n1 2 3", "expectedOutput": "1 3 2", "isHidden": false },
+      { "input": "3\n3 2 1", "expectedOutput": "1 2 3", "isHidden": true }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Kadane's Algorithm",
+    "slug": "kadanes-algorithm",
+    "difficulty": "medium",
+    "topic": "Arrays",
+    "topicOrder": 1,
+    "problemOrder": 4,
+    "description": "Find the maximum sum subarray. Input: N, then N integers.",
+    "examples": ["Input: nums = [-2,1,-3,4,-1,2,1,-5,4] → Output: 6"],
+    "constraints": ["1 <= n <= 10^5"],
+    "pattern": "dynamic programming",
+    "leetcodeUrl": "https://leetcode.com/problems/maximum-subarray/",
+    "testCases": [
+      {
+        "input": "9\n-2 1 -3 4 -1 2 1 -5 4",
+        "expectedOutput": "6",
+        "isHidden": false
+      },
+      { "input": "1\n-5", "expectedOutput": "-5", "isHidden": true }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Sort Colors",
+    "slug": "sort-colors",
+    "difficulty": "medium",
+    "topic": "Arrays",
+    "topicOrder": 1,
+    "problemOrder": 5,
+    "description": "Sort an array of 0s, 1s, and 2s in-place. Input: N, then N integers.",
+    "examples": ["Input: nums = [2,0,2,1,1,0] → Output: [0,0,1,1,2,2]"],
+    "constraints": ["1 <= n <= 300"],
+    "pattern": "two pointers",
+    "leetcodeUrl": "https://leetcode.com/problems/sort-colors/",
+    "testCases": [
+      {
+        "input": "6\n2 0 2 1 1 0",
+        "expectedOutput": "0 0 1 1 2 2",
+        "isHidden": false
+      },
+      { "input": "3\n2 1 0", "expectedOutput": "0 1 2", "isHidden": true }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Stock Buy and Sell",
+    "slug": "stock-buy-sell",
+    "difficulty": "easy",
+    "topic": "Arrays",
+    "topicOrder": 1,
+    "problemOrder": 6,
+    "description": "Find max profit from a single buy/sell. Input: N, then N integers.",
+    "examples": ["Input: prices = [7,1,5,3,6,4] → Output: 5"],
+    "constraints": ["1 <= n <= 10^5"],
+    "pattern": "greedy",
+    "leetcodeUrl": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/",
+    "testCases": [
+      { "input": "6\n7 1 5 3 6 4", "expectedOutput": "5", "isHidden": false },
+      { "input": "5\n5 4 3 2 1", "expectedOutput": "0", "isHidden": true }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Rotate Matrix",
+    "slug": "rotate-matrix",
+    "difficulty": "medium",
+    "topic": "Arrays Part-II",
+    "topicOrder": 2,
+    "problemOrder": 1,
+    "description": "Rotate image by 90 degrees. Input: N, then N x N elements.",
+    "examples": [
+      "Input: matrix = [[1,2,3],[4,5,6],[7,8,9]] → Output: [[7,4,1],[8,5,2],[9,6,3]]"
+    ],
+    "constraints": ["1 <= n <= 20"],
+    "pattern": "other",
+    "leetcodeUrl": "https://leetcode.com/problems/rotate-image/",
+    "testCases": [
+      {
+        "input": "3\n1 2 3\n4 5 6\n7 8 9",
+        "expectedOutput": "7 4 1\n8 5 2\n9 6 3",
+        "isHidden": false
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Merge Intervals",
+    "slug": "merge-intervals",
+    "difficulty": "medium",
+    "topic": "Arrays Part-II",
+    "topicOrder": 2,
+    "problemOrder": 2,
+    "description": "Merge overlapping intervals. Input: N, then N pairs.",
+    "examples": [
+      "Input: intervals = [[1,3],[2,6],[8,10],[15,18]] → Output: [[1,6],[8,10],[15,18]]"
+    ],
+    "constraints": ["1 <= n <= 10^4"],
+    "pattern": "greedy",
+    "leetcodeUrl": "https://leetcode.com/problems/merge-intervals/",
+    "testCases": [
+      {
+        "input": "4\n1 3\n2 6\n8 10\n15 18",
+        "expectedOutput": "1 6\n8 10\n15 18",
+        "isHidden": false
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Merge Sorted Array",
+    "slug": "merge-sorted-array",
+    "difficulty": "easy",
+    "topic": "Arrays Part-II",
+    "topicOrder": 2,
+    "problemOrder": 3,
+    "description": "Merge two sorted arrays in-place. Input: M, N, then M elements, then N elements.",
+    "examples": [
+      "Input: nums1 = [1,2,3,0,0,0], nums2 = [2,5,6] → Output: [1,2,2,3,5,6]"
+    ],
+    "constraints": ["0 <= m, n <= 200"],
+    "pattern": "two pointers",
+    "leetcodeUrl": "https://leetcode.com/problems/merge-sorted-array/",
+    "testCases": [
+      {
+        "input": "3 3\n1 2 3\n2 5 6",
+        "expectedOutput": "1 2 2 3 5 6",
+        "isHidden": false
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Find Duplicate Number",
+    "slug": "find-duplicate-number",
+    "difficulty": "medium",
+    "topic": "Arrays Part-II",
+    "topicOrder": 2,
+    "problemOrder": 4,
+    "description": "Find the duplicate in N+1 array. Input: N+1, then N+1 integers.",
+    "examples": ["Input: nums = [1,3,4,2,2] → Output: 2"],
+    "constraints": ["1 <= n <= 10^5"],
+    "pattern": "fast and slow pointers",
+    "leetcodeUrl": "https://leetcode.com/problems/find-the-duplicate-number/",
+    "testCases": [
+      { "input": "5\n1 3 4 2 2", "expectedOutput": "2", "isHidden": false }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Inversion Count",
+    "slug": "inversion-count",
+    "difficulty": "hard",
+    "topic": "Arrays Part-II",
+    "topicOrder": 2,
+    "problemOrder": 6,
+    "description": "Count inversions in array. Input: N, then N integers.",
+    "examples": ["Input: nums = [2,4,1,3,5] → Output: 3"],
+    "constraints": ["1 <= n <= 5 * 10^5"],
+    "pattern": "depth first search",
+    "leetcodeUrl": "https://www.geeksforgeeks.org/problems/inversion-of-array-1587115620/1",
+    "testCases": [
+      { "input": "5\n2 4 1 3 5", "expectedOutput": "3", "isHidden": false }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Search 2D Matrix",
+    "slug": "search-2d-matrix",
+    "difficulty": "medium",
+    "topic": "Arrays Part-III",
+    "topicOrder": 3,
+    "problemOrder": 1,
+    "description": "Search target in sorted matrix. Input: M, N, T, then matrix.",
+    "examples": ["Input: matrix = [[1,3,5,7]], target = 3 → Output: true"],
+    "constraints": ["1 <= m, n <= 100"],
+    "pattern": "binary search",
+    "leetcodeUrl": "https://leetcode.com/problems/search-a-2d-matrix/",
+    "testCases": [
+      {
+        "input": "3 4 3\n1 3 5 7\n10 11 16 20\n23 30 34 60",
+        "expectedOutput": "true",
+        "isHidden": false
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Pow(x, n)",
+    "slug": "pow-x-n",
+    "difficulty": "medium",
+    "topic": "Arrays Part-III",
+    "topicOrder": 3,
+    "problemOrder": 2,
+    "description": "Implement power function. Input: double x, int n.",
+    "examples": ["Input: x = 2.0, n = 10 → Output: 1024.0"],
+    "constraints": ["-100 < x < 100"],
+    "pattern": "other",
+    "leetcodeUrl": "https://leetcode.com/problems/powx-n/",
+    "testCases": [
+      { "input": "2.0 10", "expectedOutput": "1024.0", "isHidden": false }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Majority Element (>N/2)",
+    "slug": "majority-element-n2",
+    "difficulty": "easy",
+    "topic": "Arrays Part-III",
+    "topicOrder": 3,
+    "problemOrder": 3,
+    "description": "Find element appearing > N/2 times. Input: N, then N integers.",
+    "examples": ["Input: nums = [3,2,3] → Output: 3"],
+    "constraints": ["1 <= n <= 5 * 10^4"],
+    "pattern": "other",
+    "leetcodeUrl": "https://leetcode.com/problems/majority-element/",
+    "testCases": [
+      { "input": "3\n3 2 3", "expectedOutput": "3", "isHidden": false }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Unique Paths",
+    "slug": "unique-paths",
+    "difficulty": "medium",
+    "topic": "Arrays Part-III",
+    "topicOrder": 3,
+    "problemOrder": 5,
+    "description": "Count paths from top-left to bottom-right. Input: M, N.",
+    "examples": ["Input: m = 3, n = 2 → Output: 3"],
+    "constraints": ["1 <= m, n <= 100"],
+    "pattern": "dynamic programming",
+    "leetcodeUrl": "https://leetcode.com/problems/unique-paths/",
+    "testCases": [{ "input": "3 2", "expectedOutput": "3", "isHidden": false }],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "2-Sum Problem",
+    "slug": "two-sum",
+    "difficulty": "easy",
+    "topic": "Arrays Part-IV",
+    "topicOrder": 4,
+    "problemOrder": 1,
+    "description": "Find indices of two numbers that sum to target. Input: N, T, then N integers.",
+    "examples": ["Input: nums = [2,7,11,15], target = 9 → Output: [0,1]"],
+    "constraints": ["2 <= n <= 10^4"],
+    "pattern": "other",
+    "leetcodeUrl": "https://leetcode.com/problems/two-sum/",
+    "testCases": [
+      { "input": "4 9\n2 7 11 15", "expectedOutput": "0 1", "isHidden": false }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "4-Sum Problem",
+    "slug": "four-sum",
+    "difficulty": "medium",
+    "topic": "Arrays Part-IV",
+    "topicOrder": 4,
+    "problemOrder": 2,
+    "description": "Find unique quadruplets that sum to target. Input: N, T, then N integers.",
+    "examples": [
+      "Input: nums = [1,0,-1,0,-2,2], target = 0 → Output: [[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]"
+    ],
+    "constraints": ["1 <= n <= 200"],
+    "pattern": "two pointers",
+    "leetcodeUrl": "https://leetcode.com/problems/4sum/",
+    "testCases": [
+      {
+        "input": "6 0\n1 0 -1 0 -2 2",
+        "expectedOutput": "[[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]",
+        "isHidden": false
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Longest Consecutive Sequence",
+    "slug": "longest-consecutive-sequence",
+    "difficulty": "medium",
+    "topic": "Arrays Part-IV",
+    "topicOrder": 4,
+    "problemOrder": 3,
+    "description": "Find longest consecutive elements sequence length. Input: N, then N integers.",
+    "examples": ["Input: nums = [100,4,200,1,3,2] → Output: 4"],
+    "constraints": ["0 <= n <= 10^5"],
+    "pattern": "other",
+    "leetcodeUrl": "https://leetcode.com/problems/longest-consecutive-sequence/",
+    "testCases": [
+      {
+        "input": "6\n100 4 200 1 3 2",
+        "expectedOutput": "4",
+        "isHidden": false
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Longest Substring Without Repeating Characters",
+    "slug": "longest-substring-no-repeat",
+    "difficulty": "medium",
+    "topic": "Arrays Part-IV",
+    "topicOrder": 4,
+    "problemOrder": 6,
+    "description": "Find longest unique substring length. Input: String S.",
+    "examples": ["Input: s = 'abcabcbb' → Output: 3"],
+    "constraints": ["0 <= s.length <= 5 * 10^4"],
+    "pattern": "sliding window",
+    "leetcodeUrl": "https://leetcode.com/problems/longest-substring-without-repeating-characters/",
+    "testCases": [
+      { "input": "abcabcbb", "expectedOutput": "3", "isHidden": false }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Reverse Linked List",
+    "slug": "reverse-linked-list",
+    "difficulty": "easy",
+    "topic": "Linked List",
+    "topicOrder": 5,
+    "problemOrder": 1,
+    "description": "Reverse singly linked list. Input: N, then N node values.",
+    "examples": ["Input: head = [1,2,3] → Output: [3,2,1]"],
+    "constraints": ["0 <= n <= 5000"],
+    "pattern": "two pointers",
+    "leetcodeUrl": "https://leetcode.com/problems/reverse-linked-list/",
+    "testCases": [
+      { "input": "3\n1 2 3", "expectedOutput": "3 2 1", "isHidden": false }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Middle of Linked List",
+    "slug": "middle-linked-list",
+    "difficulty": "easy",
+    "topic": "Linked List",
+    "topicOrder": 5,
+    "problemOrder": 2,
+    "description": "Find middle node of linked list. Input: N, then N node values.",
+    "examples": ["Input: head = [1,2,3,4,5] → Output: [3,4,5]"],
+    "constraints": ["1 <= n <= 100"],
+    "pattern": "fast and slow pointers",
+    "leetcodeUrl": "https://leetcode.com/problems/middle-of-the-linked-list/",
+    "testCases": [
+      { "input": "5\n1 2 3 4 5", "expectedOutput": "3 4 5", "isHidden": false }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Linked List Cycle Detection",
+    "slug": "linked-list-cycle",
+    "difficulty": "easy",
+    "topic": "Linked List Part-II",
+    "topicOrder": 6,
+    "problemOrder": 2,
+    "description": "Detect cycle in linked list. Input: N, then N values, then Pos index.",
+    "examples": ["Input: head = [3,2,0,-4], pos = 1 → Output: true"],
+    "constraints": ["0 <= n <= 10^4"],
+    "pattern": "fast and slow pointers",
+    "leetcodeUrl": "https://leetcode.com/problems/linked-list-cycle/",
+    "testCases": [
+      { "input": "4\n3 2 0 -4\n1", "expectedOutput": "true", "isHidden": false }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Trapping Rain Water",
+    "slug": "trapping-rain-water",
+    "difficulty": "hard",
+    "topic": "Linked List and Arrays",
+    "topicOrder": 7,
+    "problemOrder": 4,
+    "description": "Calculate trapped water. Input: N, then N heights.",
+    "examples": ["Input: heights = [0,1,0,2,1,0,1,3,2,1,2,1] → Output: 6"],
+    "constraints": ["1 <= n <= 2 * 10^4"],
+    "pattern": "two pointers",
+    "leetcodeUrl": "https://leetcode.com/problems/trapping-rain-water/",
+    "testCases": [
+      {
+        "input": "12\n0 1 0 2 1 0 1 3 2 1 2 1",
+        "expectedOutput": "6",
+        "isHidden": false
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "N Meetings in One Room",
+    "slug": "n-meetings-one-room",
+    "difficulty": "easy",
+    "topic": "Greedy Algorithm",
+    "topicOrder": 8,
+    "problemOrder": 1,
+    "description": "Find max meetings possible. Input: N, then N start times, then N end times.",
+    "examples": ["Input: start = [1,3], end = [2,4] → Output: 2"],
+    "constraints": ["1 <= n <= 10^5"],
+    "pattern": "greedy",
+    "leetcodeUrl": "https://www.geeksforgeeks.org/problems/n-meetings-in-one-room-1587115620/1",
+    "testCases": [
+      {
+        "input": "6\n1 3 0 5 8 5\n2 4 6 7 9 9",
+        "expectedOutput": "4",
+        "isHidden": false
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Subset Sums",
+    "slug": "subset-sums",
+    "difficulty": "easy",
+    "topic": "Recursion",
+    "topicOrder": 9,
+    "problemOrder": 1,
+    "description": "Calculate sum of all possible subsets. Input: N, then N integers.",
+    "examples": ["Input: nums = [2,3] → Output: [0,2,3,5]"],
+    "constraints": ["1 <= n <= 15"],
+    "pattern": "backtracking",
+    "leetcodeUrl": "https://www.geeksforgeeks.org/problems/subset-sums2234/1",
+    "testCases": [
+      { "input": "2\n2 3", "expectedOutput": "0 2 3 5", "isHidden": false }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "N-Queens",
+    "slug": "n-queens",
+    "difficulty": "hard",
+    "topic": "Recursion and Backtracking",
+    "topicOrder": 10,
+    "problemOrder": 1,
+    "description": "Place N queens on NxN board. Input: N.",
+    "examples": [
+      "Input: n = 4 → Output: [[.Q.., ...Q, Q..., ..Q.], [..Q., Q..., ...Q, .Q..]]"
+    ],
+    "constraints": ["1 <= n <= 9"],
+    "pattern": "backtracking",
+    "leetcodeUrl": "https://leetcode.com/problems/n-queens/",
+    "testCases": [
+      {
+        "input": "4",
+        "expectedOutput": "[[.Q.., ...Q, Q..., ..Q.], [..Q., Q..., ...Q, .Q..]]",
+        "isHidden": false
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "N-th Root of an Integer",
+    "slug": "nth-root-of-integer",
+    "difficulty": "medium",
+    "topic": "Binary Search",
+    "topicOrder": 11,
+    "problemOrder": 1,
+    "description": "Find the n-th root of m. If the root is not an integer, return -1. Input: n and m.",
+    "examples": [
+      "Input: n = 3, m = 27 → Output: 3",
+      "Input: n = 4, m = 69 → Output: -1"
+    ],
+    "constraints": ["1 <= n <= 30", "1 <= m <= 10^9"],
+    "pattern": "binary search",
+    "leetcodeUrl": "https://www.geeksforgeeks.org/problems/find-nth-root-of-m5843/1",
+    "testCases": [
+      { "input": "3 27", "expectedOutput": "3", "isHidden": false },
+      { "input": "4 69", "expectedOutput": "-1", "isHidden": true }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Search in Rotated Sorted Array",
+    "slug": "search-rotated-sorted-array",
+    "difficulty": "medium",
+    "topic": "Binary Search",
+    "topicOrder": 11,
+    "problemOrder": 5,
+    "description": "Find the index of a target in an array that was rotated at an unknown pivot. Input: N, Target, followed by N integers.",
+    "examples": ["Input: nums = [4,5,6,7,0,1,2], target = 0 → Output: 4"],
+    "constraints": ["1 <= n <= 5000"],
+    "pattern": "binary search",
+    "leetcodeUrl": "https://leetcode.com/problems/search-in-rotated-sorted-array/",
+    "testCases": [
+      {
+        "input": "7 0\n4 5 6 7 0 1 2",
+        "expectedOutput": "4",
+        "isHidden": false
+      },
+      {
+        "input": "7 3\n4 5 6 7 0 1 2",
+        "expectedOutput": "-1",
+        "isHidden": true
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Median of Two Sorted Arrays",
+    "slug": "median-two-sorted-arrays",
+    "difficulty": "hard",
+    "topic": "Binary Search",
+    "topicOrder": 11,
+    "problemOrder": 7,
+    "description": "Find the median of two sorted arrays in O(log(min(m,n))). Input: M, N, then M elements, then N elements.",
+    "examples": ["Input: nums1 = [1,3], nums2 = [2] → Output: 2.0"],
+    "constraints": ["0 <= m, n <= 1000"],
+    "pattern": "binary search",
+    "leetcodeUrl": "https://leetcode.com/problems/median-of-two-sorted-arrays/",
+    "testCases": [
+      { "input": "2 1\n1 3\n2", "expectedOutput": "2.0", "isHidden": false },
+      { "input": "2 2\n1 2\n3 4", "expectedOutput": "2.5", "isHidden": true }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "K-th Largest Element in an Array",
+    "slug": "kth-largest-element",
+    "difficulty": "medium",
+    "topic": "Heaps",
+    "topicOrder": 12,
+    "problemOrder": 2,
+    "description": "Find the k-th largest element in an unsorted array. Input: N, K, followed by N integers.",
+    "examples": ["Input: nums = [3,2,3,1,2,4,5,5,6], k = 4 → Output: 4"],
+    "constraints": ["1 <= k <= n <= 10^5"],
+    "pattern": "heap",
+    "leetcodeUrl": "https://leetcode.com/problems/kth-largest-element-in-an-array/",
+    "testCases": [
+      { "input": "6 2\n3 2 1 5 6 4", "expectedOutput": "5", "isHidden": false },
+      {
+        "input": "9 4\n3 2 3 1 2 4 5 5 6",
+        "expectedOutput": "4",
+        "isHidden": true
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Valid Parentheses",
+    "slug": "valid-parentheses",
+    "difficulty": "easy",
+    "topic": "Stack and Queue",
+    "topicOrder": 13,
+    "problemOrder": 5,
+    "description": "Determine if the input string has balanced brackets. Input: A single string S.",
+    "examples": ["Input: s = \"()[]{}\" → Output: true"],
+    "constraints": ["1 <= s.length <= 10^4"],
+    "pattern": "other",
+    "leetcodeUrl": "https://leetcode.com/problems/valid-parentheses/",
+    "testCases": [
+      { "input": "()[]{}", "expectedOutput": "true", "isHidden": false },
+      { "input": "(]", "expectedOutput": "false", "isHidden": true }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Sliding Window Maximum",
+    "slug": "sliding-window-maximum",
+    "difficulty": "hard",
+    "topic": "Stack and Queue Part-II",
+    "topicOrder": 14,
+    "problemOrder": 2,
+    "description": "Find the maximum element in every sliding window of size K. Input: N, K, then N integers.",
+    "examples": [
+      "Input: nums = [1,3,-1,-3,5,3,6,7], k = 3 → Output: [3,3,5,5,6,7]"
+    ],
+    "constraints": ["1 <= n <= 10^5", "1 <= k <= n"],
+    "pattern": "sliding window",
+    "leetcodeUrl": "https://leetcode.com/problems/sliding-window-maximum/",
+    "testCases": [
+      {
+        "input": "8 3\n1 3 -1 -3 5 3 6 7",
+        "expectedOutput": "3 3 5 5 6 7",
+        "isHidden": false
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Largest Rectangle in Histogram",
+    "slug": "largest-rectangle-histogram",
+    "difficulty": "hard",
+    "topic": "Stack and Queue Part-II",
+    "topicOrder": 14,
+    "problemOrder": 6,
+    "description": "Find the area of the largest rectangle in a histogram. Input: N, then N bar heights.",
+    "examples": ["Input: heights = [2,1,5,6,2,3] → Output: 10"],
+    "constraints": ["1 <= n <= 10^5"],
+    "pattern": "other",
+    "leetcodeUrl": "https://leetcode.com/problems/largest-rectangle-in-histogram/",
+    "testCases": [
+      { "input": "6\n2 1 5 6 2 3", "expectedOutput": "10", "isHidden": false }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Reverse Words in a String",
+    "slug": "reverse-words-string",
+    "difficulty": "medium",
+    "topic": "String",
+    "topicOrder": 15,
+    "problemOrder": 1,
+    "description": "Reverse the order of words in a string. Input: A single line string S.",
+    "examples": [
+      "Input: s = \"the sky is blue\" → Output: \"blue is sky the\""
+    ],
+    "constraints": ["1 <= s.length <= 10^4"],
+    "pattern": "two pointers",
+    "leetcodeUrl": "https://leetcode.com/problems/reverse-words-in-a-string/",
+    "testCases": [
+      {
+        "input": "the sky is blue",
+        "expectedOutput": "blue is sky the",
+        "isHidden": false
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Longest Palindromic Substring",
+    "slug": "longest-palindromic-substring",
+    "difficulty": "medium",
+    "topic": "String",
+    "topicOrder": 15,
+    "problemOrder": 2,
+    "description": "Find the longest palindromic substring. Input: A single string S.",
+    "examples": ["Input: s = \"babad\" → Output: \"bab\""],
+    "constraints": ["1 <= s.length <= 1000"],
+    "pattern": "dynamic programming",
+    "leetcodeUrl": "https://leetcode.com/problems/longest-palindromic-substring/",
+    "testCases": [
+      { "input": "babad", "expectedOutput": "bab", "isHidden": false }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Binary Tree Inorder Traversal",
+    "slug": "binary-tree-inorder",
+    "difficulty": "easy",
+    "topic": "Binary Tree",
+    "topicOrder": 17,
+    "problemOrder": 1,
+    "description": "Perform inorder traversal. Input: N nodes in level-order (-1 for null).",
+    "examples": ["Input: root = [1,null,2,3] → Output: [1,3,2]"],
+    "constraints": ["0 <= n <= 100"],
+    "pattern": "depth first search",
+    "leetcodeUrl": "https://leetcode.com/problems/binary-tree-inorder-traversal/",
+    "testCases": [
+      { "input": "3\n1 -1 2 3", "expectedOutput": "1 3 2", "isHidden": false }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Diameter of Binary Tree",
+    "slug": "diameter-binary-tree",
+    "difficulty": "easy",
+    "topic": "Binary Tree Part-II",
+    "topicOrder": 18,
+    "problemOrder": 3,
+    "description": "Find the length of the longest path between any two nodes. Input: N, then N level-order values.",
+    "examples": ["Input: root = [1,2,3,4,5] → Output: 3"],
+    "constraints": ["1 <= n <= 10^4"],
+    "pattern": "depth first search",
+    "leetcodeUrl": "https://leetcode.com/problems/diameter-of-binary-tree/",
+    "testCases": [
+      { "input": "5\n1 2 3 4 5", "expectedOutput": "3", "isHidden": false }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Binary Tree Level Order Traversal",
+    "slug": "level-order-traversal",
+    "difficulty": "medium",
+    "topic": "Binary Tree Part-II",
+    "topicOrder": 18,
+    "problemOrder": 1,
+    "description": "Return the level order traversal of nodes. Input: N, then N level-order values.",
+    "examples": [
+      "Input: root = [3,9,20,null,null,15,7] → Output: [[3],[9,20],[15,7]]"
+    ],
+    "constraints": ["0 <= n <= 2000"],
+    "pattern": "breadth first search",
+    "leetcodeUrl": "https://leetcode.com/problems/binary-tree-level-order-traversal/",
+    "testCases": [
+      {
+        "input": "7\n3 9 20 -1 -1 15 7",
+        "expectedOutput": "[[3],[9,20],[15,7]]",
+        "isHidden": false
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Lowest Common Ancestor of a Binary Tree",
+    "slug": "lca-binary-tree",
+    "difficulty": "medium",
+    "topic": "Binary Tree Part-III",
+    "topicOrder": 19,
+    "problemOrder": 4,
+    "description": "Find the lowest common ancestor (LCA) of two given nodes. Input: N, P, Q, then N level-order values.",
+    "examples": [
+      "Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1 → Output: 3"
+    ],
+    "constraints": ["2 <= n <= 10^5"],
+    "pattern": "depth first search",
+    "leetcodeUrl": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/",
+    "testCases": [
+      {
+        "input": "11 5 1\n3 5 1 6 2 0 8 -1 -1 7 4",
+        "expectedOutput": "3",
+        "isHidden": false
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Validate Binary Search Tree",
+    "slug": "validate-bst",
+    "difficulty": "medium",
+    "topic": "Binary Search Tree Part-II",
+    "topicOrder": 21,
+    "problemOrder": 4,
+    "description": "Check if a binary tree is a valid BST. Input: N, then N level-order values.",
+    "examples": ["Input: root = [2,1,3] → Output: true"],
+    "constraints": ["1 <= n <= 10^4"],
+    "pattern": "depth first search",
+    "leetcodeUrl": "https://leetcode.com/problems/validate-binary-search-tree/",
+    "testCases": [
+      { "input": "3\n2 1 3", "expectedOutput": "true", "isHidden": false },
+      {
+        "input": "5\n5 1 4 -1 -1 3 6",
+        "expectedOutput": "false",
+        "isHidden": true
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "K-th Smallest Element in a BST",
+    "slug": "kth-smallest-bst",
+    "difficulty": "medium",
+    "topic": "Binary Search Tree Part-II",
+    "topicOrder": 21,
+    "problemOrder": 2,
+    "description": "Find the k-th smallest element in a Binary Search Tree. Input: N, K, followed by N level-order values.",
+    "examples": ["Input: root = [3,1,4,null,2], k = 1 → Output: 1"],
+    "constraints": ["1 <= k <= n <= 10^4"],
+    "pattern": "depth first search",
+    "leetcodeUrl": "https://leetcode.com/problems/kth-smallest-element-in-a-bst/",
+    "testCases": [
+      { "input": "4 1\n3 1 4 -1 2", "expectedOutput": "1", "isHidden": false },
+      {
+        "input": "6 3\n5 3 6 2 4 -1 -1 1",
+        "expectedOutput": "3",
+        "isHidden": true
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Binary Tree to DLL",
+    "slug": "binary-tree-to-dll",
+    "difficulty": "hard",
+    "topic": "Binary Trees [Miscellaneous]",
+    "topicOrder": 22,
+    "problemOrder": 1,
+    "description": "Convert a Binary Tree to a Doubly Linked List (DLL) in-place using inorder traversal order. Input: N followed by N level-order values.",
+    "examples": [
+      "Input: root = [10,12,15,25,30,36] → Output: 25 12 30 10 36 15"
+    ],
+    "constraints": ["1 <= n <= 10^5"],
+    "pattern": "depth first search",
+    "leetcodeUrl": "https://www.geeksforgeeks.org/problems/binary-tree-to-dll/1",
+    "testCases": [
+      {
+        "input": "3\n10 12 15",
+        "expectedOutput": "12 10 15",
+        "isHidden": false
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Find Median from Data Stream",
+    "slug": "median-data-stream",
+    "difficulty": "hard",
+    "topic": "Binary Trees [Miscellaneous]",
+    "topicOrder": 22,
+    "problemOrder": 2,
+    "description": "Implement a data structure that receives a stream of integers and returns the median. Input: Q (operations), then Q lines of 'add val' or 'findMedian'.",
+    "examples": ["Input: add 1, add 2, findMedian → Output: null null 1.5"],
+    "constraints": ["Up to 5 * 10^4 calls"],
+    "pattern": "heap",
+    "leetcodeUrl": "https://leetcode.com/problems/find-median-from-data-stream/",
+    "testCases": [
+      {
+        "input": "3\nadd 1\nadd 2\nfindMedian",
+        "expectedOutput": "null\nnull\n1.5",
+        "isHidden": false
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Clone Graph",
+    "slug": "clone-graph",
+    "difficulty": "medium",
+    "topic": "Graph",
+    "topicOrder": 23,
+    "problemOrder": 1,
+    "description": "Given a reference of a node in a connected undirected graph, return a deep copy (clone) of the graph. Input: N (nodes), E (edges), followed by E lines of u v.",
+    "examples": [
+      "Input: adjList = [[2,4],[1,3],[2,4],[1,3]] → Output: [[2,4],[1,3],[2,4],[1,3]]"
+    ],
+    "constraints": ["0 <= n <= 100"],
+    "pattern": "breadth first search",
+    "leetcodeUrl": "https://leetcode.com/problems/clone-graph/",
+    "testCases": [
+      {
+        "input": "4 4\n1 2\n2 3\n3 4\n4 1",
+        "expectedOutput": "1: 2 4\n2: 1 3\n3: 2 4\n4: 1 3",
+        "isHidden": false
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Topological Sort (Kahn's)",
+    "slug": "topological-sort",
+    "difficulty": "medium",
+    "topic": "Graph",
+    "topicOrder": 23,
+    "problemOrder": 5,
+    "description": "Find a topological ordering of a Directed Acyclic Graph (DAG). Input: V, E, then E lines of u v.",
+    "examples": ["Input: adj = [[], [0], [0], [0]] → Output: [1, 2, 3, 0]"],
+    "constraints": ["2 <= V <= 10^4"],
+    "pattern": "breadth first search",
+    "leetcodeUrl": "https://www.geeksforgeeks.org/problems/topological-sort/1",
+    "testCases": [
+      {
+        "input": "4 3\n1 0\n2 0\n3 0",
+        "expectedOutput": "1 2 3 0",
+        "isHidden": false
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Shortest Path in Weighted Graph (Dijkstra)",
+    "slug": "shortest-path-dijkstra",
+    "difficulty": "medium",
+    "topic": "Graph Part-II",
+    "topicOrder": 24,
+    "problemOrder": 2,
+    "description": "Find the shortest path from a source node to all other nodes. Input: V, E, S, then E lines of u v w.",
+    "examples": [
+      "Input: V=3, E=3, S=2, edges=[[0,1,1],[0,2,6],[1,2,3]] → Output: [4, 3, 0]"
+    ],
+    "constraints": ["1 <= V <= 1000"],
+    "pattern": "heap",
+    "leetcodeUrl": "https://www.geeksforgeeks.org/problems/implementing-dijkstra-set-1-adjacency-matrix/1",
+    "testCases": [
+      {
+        "input": "3 3 2\n0 1 1\n0 2 6\n1 2 3",
+        "expectedOutput": "4 3 0",
+        "isHidden": false
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Edit Distance",
+    "slug": "edit-distance",
+    "difficulty": "hard",
+    "topic": "Dynamic Programming",
+    "topicOrder": 25,
+    "problemOrder": 4,
+    "description": "Find minimum operations to convert word1 to word2. Input: word1, word2.",
+    "examples": ["Input: s1 = \"horse\", s2 = \"ros\" → Output: 3"],
+    "constraints": ["0 <= s.length <= 500"],
+    "pattern": "dynamic programming",
+    "leetcodeUrl": "https://leetcode.com/problems/edit-distance/",
+    "testCases": [
+      { "input": "horse\nros", "expectedOutput": "3", "isHidden": false }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "0/1 Knapsack Problem",
+    "slug": "zero-one-knapsack",
+    "difficulty": "medium",
+    "topic": "Dynamic Programming",
+    "topicOrder": 25,
+    "problemOrder": 3,
+    "description": "Maximize item value in a knapsack with weight capacity W. Input: N, W, then N values, then N weights.",
+    "examples": [
+      "Input: val = [60, 100, 120], wt = [10, 20, 30], W = 50 → Output: 220"
+    ],
+    "constraints": ["1 <= n <= 1000", "1 <= W <= 1000"],
+    "pattern": "dynamic programming",
+    "leetcodeUrl": "https://www.geeksforgeeks.org/problems/0-1-knapsack-problem0945/1",
+    "testCases": [
+      {
+        "input": "3 50\n60 100 120\n10 20 30",
+        "expectedOutput": "220",
+        "isHidden": false
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Maximum XOR of Two Numbers",
+    "slug": "max-xor-two-numbers",
+    "difficulty": "medium",
+    "topic": "Trie",
+    "topicOrder": 27,
+    "problemOrder": 4,
+    "description": "Find the maximum result of XORing any two numbers in an array. Input: N followed by N integers.",
+    "examples": ["Input: nums = [3,10,5,25,2,8] → Output: 28"],
+    "constraints": ["1 <= n <= 2 * 10^5"],
+    "pattern": "other",
+    "leetcodeUrl": "https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/",
+    "testCases": [
+      { "input": "6\n3 10 5 25 2 8", "expectedOutput": "28", "isHidden": false }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  },
+  {
+    "title": "Implement Trie (Prefix Tree)",
+    "slug": "implement-trie",
+    "difficulty": "medium",
+    "topic": "Trie",
+    "topicOrder": 27,
+    "problemOrder": 1,
+    "description": "Implement a trie with insert, search, and startsWith. Input: Q operations, then Q lines of command word.",
+    "examples": [
+      "Input: insert apple, search apple, startsWith app → Output: null true true"
+    ],
+    "constraints": ["Calls <= 3 * 10^4"],
+    "pattern": "other",
+    "leetcodeUrl": "https://leetcode.com/problems/implement-trie-prefix-tree/",
+    "testCases": [
+      {
+        "input": "4\ninsert apple\nsearch apple\nsearch app\nstartsWith app",
+        "expectedOutput": "null\ntrue\nfalse\ntrue",
+        "isHidden": false
+      }
+    ],
+    "source": "striver-sde",
+    "status": "approved"
+  }
+]

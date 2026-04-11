@@ -46,17 +46,19 @@ export function verifyToken(token: string): JWTPayload | null {
 
 // Request Auth Helper
 export function getTokenFromRequest(request: NextRequest): JWTPayload | null {
-  const authHeader = request.headers.get("authorization");
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return null;
-  }
+  // const authHeader = request.headers.get("authorization");
+  // if (!authHeader || !authHeader.startsWith("Bearer ")) {
+  //   return null;
+  // }
 
-  const token = authHeader.split(" ")[1];
+  // const token = authHeader.split(" ")[1];
+  const token = request.cookies.get("token")?.value;
+  if (!token) return null;
   return verifyToken(token);
 }
 
-// This was the v1 which I update directly onto mongodb for the quota but i used redis for fast execution and it was frequently accessed data in our application 
-//mongodb takes  1-5ms with a network round trip to atlas, redis reads from upstash and takes under 0.5 ms. beyond this redis have ttl which is perfect for our daily quota to reset 
+// This was the v1 which I update directly onto mongodb for the quota but i used redis for fast execution and it was frequently accessed data in our application
+//mongodb takes  1-5ms with a network round trip to atlas, redis reads from upstash and takes under 0.5 ms. beyond this redis have ttl which is perfect for our daily quota to reset
 // everyday without any external query, it will automatically expire the key after ttl is hit.
 // //Daily Quota Utilities
 // const DAILY_HINT_LIMIT = 50;

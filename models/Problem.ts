@@ -61,6 +61,7 @@ const ProblemSchema = new Schema<IProblem>(
     ],
     contraints: [{ type: String }],
     pattern: {
+      type: String,
       enum: [
         "sliding window",
         "two pointers",
@@ -101,7 +102,7 @@ const ProblemSchema = new Schema<IProblem>(
 
     source: {
       type: String,
-      requried: true,
+      required: true,
     },
   },
   { timestamps: true },
