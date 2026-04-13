@@ -1,7 +1,6 @@
 import { comparePassword, signToken } from "@/lib/auth";
 import connectDB from "@/lib/mongodb";
 import User from "@/models/User";
-import { triggerAsyncId } from "async_hooks";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
