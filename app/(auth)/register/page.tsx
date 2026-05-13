@@ -1,10 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import Link from "next/link";
+import { Eye, EyeOff } from "lucide-react";
 
-const CONCEPTS = [
+import { useState, useEffect } from "react";
+
+// Type-safe constants
+const KNOWN_CONCEPTS = [
   "arrays",
   "hashmaps",
   "recursion",
@@ -13,209 +16,312 @@ const CONCEPTS = [
   "trees",
   "graphs",
   "dynamic programming",
-];
+] as const;
+type KnownConcept = (typeof KNOWN_CONCEPTS)[number];
 
-const LEVELS = [
-  { value: "beginner", label: "Beginner", desc: "0–20 problems" },
-  { value: "intermediate", label: "Intermediate", desc: "20–100 problems" },
-  { value: "advanced", label: "Advanced", desc: "100+ problems" },
-];
+const EXPERIENCE_LEVELS = [
+  { value: "beginner", label: "Beginner (0–20 problems)" },
+  { value: "intermediate", label: "Intermediate (20–100 problems)" },
+  { value: "advanced", label: "Advanced (100+ problems)" },
+] as const;
+type ExperienceLevel = (typeof EXPERIENCE_LEVELS)[number]["value"];
 
-export default function RegsiterPage() {
+// Password strength evaluator
+function getPasswordStrength(password: string): number {
+  let strength = 0;
+  if (password.length >= 8) strength++;
+  if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+  if (/[0-9]/.test(password)) strength++;
+  if (/[^a-zA-Z0-9]/.test(password)) strength++;
+  return strength; // 0-4
+}
+
+function getStrengthLabel(score: number): string {
+  if (score === 0) return "Very weak";
+  if (score === 1) return "Weak";
+  if (score === 2) return "Fair";
+  if (score === 3) return "Good";
+  return "Strong";
+}
+
+export default function RegisterPage() {
   const router = useRouter();
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [knownConcepts, setKnownConcepts] = useState<string[]>([]);
-  const [experienceLevel, setLevel] = useState("beginner");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    knownConcepts: [] as KnownConcept[],
+    experienceLevel: "beginner" as ExperienceLevel,
+  });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0);
 
-  function toggleConcept(concept: string) {
-    setKnownConcepts((prev) => {
-      const updated = prev.includes(concept)
-        ? prev.filter((c) => c !== concept)
-        : [...prev, concept];
-      console.log("concepts:", updated); // ← add this
-      return updated;
-    });
-  }
+  // Update strength when password changes
+  useEffect(() => {
+    setPasswordStrength(getPasswordStrength(formData.password));
+  }, [formData.password]);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { name, value, type, checked } = e.target as HTMLInputElement;
+
+    if (type === "checkbox") {
+      setFormData((prev) => {
+        const concepts = checked
+          ? [...prev.knownConcepts, name as KnownConcept]
+          : prev.knownConcepts.filter((c) => c !== name);
+        return { ...prev, knownConcepts: concepts };
+      });
+    } else if (name === "experienceLevel") {
+      setFormData((prev) => ({
+        ...prev,
+        experienceLevel: value as ExperienceLevel,
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
 
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+
+    // Validation
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+    if (formData.password.length < 8) {
+      setError("Password must be at least 8 characters");
+      return;
+    }
+    const strength = getPasswordStrength(formData.password);
+    if (strength < 2) {
+      setError(
+        "Password is too weak. Use mix of upper/lower case, numbers, and symbols.",
+      );
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const res = await fetch("api/auth/register", {
+      const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name,
-          email,
-          password,
-          knownConcepts,
-          experienceLevel,
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          knownConcepts: formData.knownConcepts,
+          experienceLevel: formData.experienceLevel,
         }),
+        credentials: "include",
       });
+
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.message || "Something went wrong");
+        setError(data.message || "Registration failed");
         return;
       }
+
       router.push("/dashboard");
     } catch (err) {
-      setError("Network error, Please try again later");
+      setError("Network error. Please try again.");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <main className="min-h-screen bg-kodex-bg flex items-center justify-center px-4 py-12">
-      <div
-        className="fixed inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage: `linear-gradient(#F4D03F 1px, transparent 1px), linear-gradient(90deg, #F4D03F 1px, transparent 1px)`,
-          backgroundSize: "40px 40px",
-        }}
-      />
+    <main className="min-h-screen bg-kodex-bg flex items-center justify-center px-4 overflow-hidden">
+      <div className="fixed inset-0 opacity-[0.035] bg-grid-pattern" />
 
-      <div className="relative w-full max-w-sm">
-        {/* logo */}
-        <div className="mb-8">
-          <h1 className="font-mono text-2xl font-bold text-kodex-text tracking-tight">
-            Kō<span className="text-kodex-accent">dex</span>
-          </h1>
-          <p className="text-kodex-muted text-sm mt-1 font-mono">
-            Begin your training.
+      <div className="relative w-full max-w-md">
+        <div className="mb-12 text-center">
+          <div className="inline-flex items-center gap-2 mb-2">
+            <div className="w-6 h-6 rounded-full border border-kodex-accent/30 flex items-center justify-center">
+              <span className="text-kodex-accent text-xl font-bold">刀</span>
+            </div>
+            <h1 className="font-mono text-4xl font-bold tracking-tighter text-kodex-text">
+              Kō<span className="text-kodex-accent">dex</span>
+            </h1>
+          </div>
+          <p className="text-kodex-muted text-sm font-mono">
+            The dojo. Not the answer sheet.
           </p>
         </div>
 
-        <form onSubmit={handleRegister} className="space-y-4">
-          {/* name */}
-          <div>
-            <label className="block text-xs font-mono text-kodex-muted mb-1.5 uppercase tracking-widest">
-              Name
-            </label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              className="w-full bg-kodex-surface border border-kodex-border text-kodex-text font-mono text-sm px-3 py-2.5 rounded-[4px] outline-none focus:border-kodex-accent transition-colors placeholder:text-kodex-muted/40"
-              placeholder="Your name"
-            />
-          </div>
-
-          {/* email */}
-          <div>
-            <label className="block text-xs font-mono text-kodex-muted mb-1.5 uppercase tracking-widest">
-              Email
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full bg-kodex-surface border border-kodex-border text-kodex-text font-mono text-sm px-3 py-2.5 rounded-[4px] outline-none focus:border-kodex-accent transition-colors placeholder:text-kodex-muted/40"
-              placeholder="you@example.com"
-            />
-          </div>
-
-          {/* password */}
-          <div>
-            <label className="block text-xs font-mono text-kodex-muted mb-1.5 uppercase tracking-widest">
-              Password
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full bg-kodex-surface border border-kodex-border text-kodex-text font-mono text-sm px-3 py-2.5 rounded-[4px] outline-none focus:border-kodex-accent transition-colors placeholder:text-kodex-muted/40"
-              placeholder="Min. 6 characters"
-            />
-          </div>
-
-          {/* known concepts */}
-          <div>
-            <label className="block text-xs font-mono text-kodex-muted mb-2 uppercase tracking-widest">
-              What do you already know?
-            </label>
-            <div className="grid grid-cols-2 gap-1.5">
-              {CONCEPTS.map((concept) => (
-                <button
-                  key={concept}
-                  type="button"
-                  onClick={() => toggleConcept(concept)}
-                  className={`text-left px-3 py-2 rounded-[4px] font-mono text-xs border transition-colors ${
-                    knownConcepts.includes(concept)
-                      ? "border-kodex-accent bg-kodex-accent/10 text-kodex-accent"
-                      : "border-kodex-border bg-kodex-surface text-kodex-muted hover:border-kodex-muted"
-                  }`}
-                >
-                  {concept}
-                </button>
-              ))}
+        <div className="bg-kodex-surface border border-kodex-border rounded-kodex p-8 shadow-2xl">
+          <form onSubmit={handleRegister} className="space-y-5">
+            {/* Name */}
+            <div>
+              <label className="block text-xs font-mono text-kodex-muted mb-1.5 uppercase tracking-widest">
+                NAME
+              </label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                autoComplete="name"
+                className="w-full bg-kodex-editor border border-kodex-border text-kodex-text font-mono text-sm px-4 py-3 rounded-kodex focus:outline-none focus:ring-2 focus:ring-kodex-accent/50 focus:border-transparent"
+                placeholder="Tarun Saini"
+              />
             </div>
-          </div>
-
-          {/* experience level */}
-          <div>
-            <label className="block text-xs font-mono text-kodex-muted mb-2 uppercase tracking-widest">
-              Experience Level
-            </label>
-            <div className="space-y-1.5">
-              {LEVELS.map((level) => (
-                <button
-                  key={level.value}
-                  type="button"
-                  onClick={() => setLevel(level.value)}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-[4px] border font-mono text-xs transition-colors ${
-                    experienceLevel === level.value
-                      ? "border-kodex-accent bg-kodex-accent/10 text-kodex-accent"
-                      : "border-kodex-border bg-kodex-surface text-kodex-muted hover:border-kodex-muted"
-                  }`}
-                >
-                  <span>{level.label}</span>
-                  <span className="opacity-50">{level.desc}</span>
-                </button>
-              ))}
+            {/* Email */}
+            <div>
+              <label className="block text-xs font-mono text-kodex-muted mb-1.5 uppercase tracking-widest">
+                EMAIL
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                autoComplete="email"
+                className="w-full bg-kodex-editor border border-kodex-border text-kodex-text font-mono text-sm px-4 py-3 rounded-kodex focus:outline-none focus:ring-2 focus:ring-kodex-accent/50"
+                placeholder="you@example.com"
+              />
             </div>
-          </div>
-
-          {/* error */}
-          {error && (
-            <p className="text-kodex-danger text-xs font-mono border border-kodex-danger/20 bg-kodex-danger/5 px-3 py-2 rounded-[4px]">
-              {error}
-            </p>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-kodex-accent text-kodex-bg font-mono font-bold text-sm py-2.5 rounded-[4px] hover:bg-kodex-accent/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
-          >
-            {loading ? "Entering dojo..." : "Start Training"}
-          </button>
-        </form>
-
-        <div className="flex items-center gap-3 my-6">
-          <div className="flex-1 h-px bg-kodex-border" />
-          <span className="text-kodex-muted text-xs font-mono">or</span>
-          <div className="flex-1 h-px bg-kodex-border" />
+            {/* // Password field */}
+            <div className="relative">
+              <label className="block text-xs font-mono text-kodex-muted mb-1.5 uppercase tracking-widest">
+                PASSWORD
+              </label>
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                autoComplete="new-password"
+                className="w-full bg-kodex-editor border border-kodex-border text-kodex-text font-mono text-sm px-4 py-3 rounded-kodex focus:outline-none focus:ring-2 focus:ring-kodex-accent/50 pr-10"
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-kodex-muted hover:text-kodex-accent"
+                tabIndex={-1}
+              >
+                {showPassword ? <Eye /> : <EyeOff />}
+              </button>
+            </div>
+            {/* // Confirm password field */}
+            <div className="relative">
+              <label className="block text-xs font-mono text-kodex-muted mb-1.5 uppercase tracking-widest">
+                CONFIRM PASSWORD
+              </label>
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+                autoComplete="off"
+                className="w-full bg-kodex-editor border border-kodex-border text-kodex-text font-mono text-sm px-4 py-3 rounded-kodex focus:outline-none focus:ring-2 focus:ring-kodex-accent/50 pr-10"
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-kodex-muted hover:text-kodex-accent"
+                tabIndex={-1}
+              >
+                {showConfirmPassword ? <Eye /> : <EyeOff />}
+              </button>
+            </div>
+            {/* Experience Level */}
+            <div>
+              <label className="block text-xs font-mono text-kodex-muted mb-1.5 uppercase tracking-widest">
+                YOUR CURRENT LEVEL
+              </label>
+              <div className="grid grid-cols-1 gap-2">
+                {EXPERIENCE_LEVELS.map(({ value, label }) => (
+                  <label
+                    key={value}
+                    className="flex items-center gap-3 bg-kodex-editor border border-kodex-border hover:border-kodex-accent/40 rounded-kodex px-4 py-3 cursor-pointer transition-colors"
+                  >
+                    <input
+                      type="radio"
+                      name="experienceLevel"
+                      value={value}
+                      checked={formData.experienceLevel === value}
+                      onChange={handleChange}
+                      className="accent-kodex-accent w-4 h-4"
+                    />
+                    <span className="text-kodex-text font-mono text-sm">
+                      {label}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </div>
+            {/* Known Concepts */}
+            <div>
+              <label className="block text-xs font-mono text-kodex-muted mb-1.5 uppercase tracking-widest">
+                CONCEPTS YOU ALREADY KNOW
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                {KNOWN_CONCEPTS.map((concept) => (
+                  <label
+                    key={concept}
+                    className="flex items-center gap-2 bg-kodex-editor border border-kodex-border hover:border-kodex-accent/40 rounded-kodex px-3 py-2 cursor-pointer transition-colors text-sm font-mono"
+                  >
+                    <input
+                      type="checkbox"
+                      name={concept}
+                      checked={formData.knownConcepts.includes(concept)}
+                      onChange={handleChange}
+                      className="accent-kodex-accent"
+                    />
+                    <span className="text-kodex-text capitalize">
+                      {concept}
+                    </span>
+                  </label>
+                ))}
+              </div>
+              <p className="text-[10px] text-kodex-muted/70 mt-2 font-mono">
+                Select all that apply. You can update this later.
+              </p>
+            </div>
+            {error && (
+              <div className="text-kodex-danger text-sm font-mono border-l-2 border-kodex-danger pl-3 py-1 bg-kodex-danger/5">
+                {error}
+              </div>
+            )}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-kodex-accent hover:bg-amber-400 active:bg-amber-500 text-kodex-bg font-mono font-semibold text-sm py-3.5 rounded-kodex transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              {loading ? (
+                <div className="animate-spin h-4 w-4 border-2 border-kodex-bg border-t-transparent rounded-full" />
+              ) : (
+                "Begin Training →"
+              )}
+            </button>
+          </form>
         </div>
 
-        <p className="text-center text-xs font-mono text-kodex-muted">
-          Already training?{" "}
+        <p className="text-center text-xs font-mono text-kodex-muted mt-8">
+          Already walking the path?{" "}
           <Link
             href="/login"
-            className="text-kodex-accent hover:underline underline-offset-4"
+            className="text-kodex-accent hover:text-amber-400 transition-colors underline-offset-4 hover:underline"
           >
-            Enter dojo
+            Enter the dojo
           </Link>
         </p>
       </div>

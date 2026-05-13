@@ -16,110 +16,122 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
     setLoading(true);
+
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
+        credentials: "include",
       });
+
       const data = await res.json();
+
       if (!res.ok) {
-        setError(data.message || "something went wrong");
+        setError(data.message || "Invalid credentials");
         return;
       }
+
       router.push("/dashboard");
+      router.refresh(); 
     } catch (err) {
-      setError("Network error. Please try again later ");
+      setError("Network error. Please try again.");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <main className="min-h-screen bg-kodex-bg flex items-center justify-center px-4">
-      {/* subtle grid background */}
+    <main className="min-h-screen bg-kodex-bg flex items-center justify-center px-4 overflow-hidden">
+      {/* Subtle Dojo grid background */}
       <div
-        className="fixed inset-0 opacity-[0.03]"
+        className="fixed inset-0 opacity-[0.035]"
         style={{
-          backgroundImage: `linear-gradient(#F4D03F 1px, transparent 1px), linear-gradient(90deg, #F4D03F 1px, transparent 1px)`,
-          backgroundSize: "40px 40px",
+          backgroundImage: `
+            linear-gradient(to right, #F4D03F 1px, transparent 1px),
+            linear-gradient(to bottom, #F4D03F 1px, transparent 1px)
+          `,
+          backgroundSize: "44px 44px",
         }}
       />
 
-      <div className="relative w-full max-w-sm">
-        {/* logo */}
-        <div className="mb-10">
-          <h1 className="font-mono text-2xl font-bold text-kodex-text tracking-tight">
-            Kō<span className="text-kodex-accent">dex</span>
-          </h1>
-          <p className="text-kodex-muted text-sm mt-1 font-mono">
+      <div className="relative w-full max-w-md">
+        {/* Logo / Brand */}
+        <div className="mb-12 text-center">
+          <div className="inline-flex items-center gap-2 mb-2">
+            <div className="w-6 h-6 rounded-full border border-kodex-accent/30 flex items-center justify-center">
+              <span className="text-kodex-accent text-xl font-bold">刀</span>
+            </div>
+            <h1 className="font-mono text-4xl font-bold tracking-tighter text-kodex-text">
+              Kō<span className="text-kodex-accent">dex</span>
+            </h1>
+          </div>
+          <p className="text-kodex-muted text-sm font-mono">
             The dojo. Not the answer sheet.
           </p>
         </div>
 
-        {/* form */}
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <label className="block text-xs font-mono text-kodex-muted mb-1.5 uppercase tracking-widest">
-              Email
-            </label>
-            <input
-              type="email"
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full bg-kodex-surface border border-kodex-border text-kodex-text font-mono text-sm px-3 py-2.5 rounded-[4px] outline-none focus:border-kodex-accent transition-colors placeholder:text-kodex-muted/40"
-              placeholder="you@example.com"
-            />
-          </div>
+        {/* Card */}
+        <div className="bg-kodex-surface border border-kodex-border rounded-kodex p-8 shadow-2xl">
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div>
+              <label className="block text-xs font-mono text-kodex-muted mb-1.5 uppercase tracking-widest">
+                EMAIL
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full bg-kodex-editor border border-kodex-border text-kodex-text font-mono text-sm px-4 py-3 rounded-kodex outline-none focus:border-kodex-accent focus:ring-1 focus:ring-kodex-accent/30 transition-all placeholder:text-kodex-muted/50"
+                placeholder="you@example.com"
+              />
+            </div>
 
-          <div>
-            <label className="block text-xs font-mono text-kodex-muted mb-1.5 uppercase tracking-widest">
-              Password
-            </label>
-            <input
-              type="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full bg-kodex-surface border border-kodex-border text-kodex-text font-mono text-sm px-3 py-2.5 rounded-[4px] outline-none focus:border-kodex-accent transition-colors placeholder:text-kodex-muted/40"
-              placeholder="••••••••"
-            />
-          </div>
+            <div>
+              <label className="block text-xs font-mono text-kodex-muted mb-1.5 uppercase tracking-widest">
+                PASSWORD
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full bg-kodex-editor border border-kodex-border text-kodex-text font-mono text-sm px-4 py-3 rounded-kodex outline-none focus:border-kodex-accent focus:ring-1 focus:ring-kodex-accent/30 transition-all placeholder:text-kodex-muted/50"
+                placeholder="••••••••"
+              />
+            </div>
 
-          {/* error */}
-          {error && (
-            <p className="text-kodex-danger text-xs font-mono border border-kodex-danger/20 bg-kodex-danger/5 px-3 py-2 rounded-[4px]">
-              {error}
-            </p>
-          )}
+            {error && (
+              <div className="text-kodex-danger text-sm font-mono border-l-2 border-kodex-danger pl-3 py-1 bg-kodex-danger/5">
+                {error}
+              </div>
+            )}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-kodex-accent text-kodex-bg font-mono font-bold text-sm py-2.5 rounded-[4px] hover:bg-kodex-accent/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
-          >
-            {loading ? "Entering dojo..." : "Enter"}
-          </button>
-        </form>
-
-        {/* divider */}
-        <div className="flex items-center gap-3 my-6">
-          <div className="flex-1 h-px bg-kodex-border" />
-          <span className="text-kodex-muted text-xs font-mono">or</span>
-          <div className="flex-1 h-px bg-kodex-border" />
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-kodex-accent hover:bg-amber-400 active:bg-amber-500 text-kodex-bg font-mono font-semibold text-sm py-3.5 rounded-kodex transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              {loading ? (
+                <>Entering the dojo...</>
+              ) : (
+                <>
+                  Enter the Dojo <span className="text-base">→</span>
+                </>
+              )}
+            </button>
+          </form>
         </div>
 
-        {/* register link */}
-        <p className="text-center text-xs font-mono text-kodex-muted">
-          No account?{" "}
+        {/* Register link */}
+        <p className="text-center text-xs font-mono text-kodex-muted mt-8">
+          New to the path?{" "}
           <Link
             href="/register"
-            className="text-kodex-accent hover:underline underline-offset-4"
+            className="text-kodex-accent hover:text-amber-400 transition-colors underline-offset-4 hover:underline"
           >
-            Begin training
+            Begin your training
           </Link>
         </p>
       </div>

@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     // parse and validate request body
     const body = await request.json();
     const {
-      problem,
+      problemSlug,
       userCode,
       language,
       hintsGiven,
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
       nudgeTriggered,
       solved,
     } = body;
-    if (!problem || !userCode || !language) {
+    if (!userCode || !language) {
       return NextResponse.json(
         {
           success: false,
@@ -63,13 +63,27 @@ export async function POST(request: NextRequest) {
 
     // fetch user profile for personalization
     await connectDB();
+
     const currUser = await User.findById(token.userId).select(
       "knownConcepts experienceLevel",
     );
+    const problem = await Problem.findOne({ slug: problemSlug }).select(
+      "-pattern -testCases",
+    );
+    if (!problem) {
+      return NextResponse.json(
+        { success: false, message: "Problem not found" },
+        { status: 404 },
+      );
+    }
+    const codeToSend = userCode?.trim()
+      ? userCode
+      : "// STUDENT HAS NOT WRITTEN ANY CODE YET — do not give implementation hints";
+
     // Call groq api
     const ClaudeResponse = await getHintFromClaude({
-      problem,
-      userCode,
+      problem: `${problem.title}\n\n${problem.description}\n\nExamples:\n${problem.examples.join("\n")}`,
+      userCode: codeToSend,
       language,
       hintsGiven: hintsGiven || 0,
       conversationHistory: conversationHistory || [],
@@ -88,7 +102,7 @@ export async function POST(request: NextRequest) {
     if (!sessionId) {
       session = await Session.create({
         userId: token.userId,
-        problemSlug: problem,
+        problemSlug: problemSlug,
         userCode,
         language,
         pattern: ClaudeResponse.pattern,
@@ -106,7 +120,7 @@ export async function POST(request: NextRequest) {
             hintsGiven: ClaudeResponse.hintsGiven,
             currentMode: ClaudeResponse.mode,
             ...(ClaudeResponse.structuredReveal && {
-              structureReveal: ClaudeResponse.structuredReveal,
+              structuredReveal: ClaudeResponse.structuredReveal,
             }),
             // Save pattern card when solved
             ...(ClaudeResponse.patternCard && {
@@ -211,10 +225,17 @@ export async function PATCH(request: NextRequest) {
 
     await connectDB();
 
-    const user = await Session.findById({
+    const session = await Session.findOne({
       _id: sessionId,
       userId: token.userId,
     }).select("userCode language");
+
+    if (!session) {
+      return NextResponse.json(
+        { success: false, message: "Session not found" },
+        { status: 404 },
+      );
+    }
 
     const problem = await Problem.findOne({ slug: problemSlug });
 
@@ -223,8 +244,8 @@ export async function PATCH(request: NextRequest) {
       hiddenTest.map(async (tc: any) => {
         const res = await executeCode(
           {
-            code: user.userCode,
-            language: user.language,
+            code: session.userCode,
+            language: session.language,
             testInput: tc.input,
           },
           tc.expectedOutput,

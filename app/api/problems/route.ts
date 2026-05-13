@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
     if (topic) filter.topic = topic;
     if (status) filter.status = status;
 
-    const problems = await Problem.find(filter)
+    const problems = await Problem.find(filter) 
       .select("-pattern")
       .sort({ topicOrder: 1, problemOrder: 1 });
 

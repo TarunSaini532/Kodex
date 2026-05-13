@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 import { DSAPattern } from "./Session";
 
-export type Difficulty = "easy" | "medium" | "difficulty";
+export type Difficulty = "easy" | "medium" | "hard";
 
 export interface IProblem extends Document {
   title: string;
@@ -15,6 +15,7 @@ export interface IProblem extends Document {
   contraints: string[];
   pattern: DSAPattern;
   leetcodeUrl: string;
+  siblingProblem: string[];
   testCases: ITestCase[];
   status: "pending" | "approved" | "rejected";
   submittedBy: mongoose.Types.ObjectId | null;

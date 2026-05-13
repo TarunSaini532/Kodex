@@ -205,6 +205,11 @@ Example:
 "Before we optimize — look at your loop condition on line 4.
 What happens when i reaches array.length exactly?"
 
+- If student has written NO code (only comments or empty):
+  Do NOT give a complexity hint.
+  Ask: "Before we begin — what is your first instinct for approaching this problem?"
+  Set mode: "approach_validation", hintsGiven: 0
+
 ██████████████████████████████████████████████
 HINT PROGRESSION
 ██████████████████████████████████████████████
@@ -408,6 +413,8 @@ export async function getHintFromClaude(
   req: HintRequest,
 ): Promise<ClaudeResponse> {
   const trimmedHistory = trimConversationHistory(req.conversationHistory);
+
+  const codeBlock= req.userCode?.trim()?req.userCode: "//STUDENT HAS NOT WRITTEN ANY CODE YET";
 
   const userMessage = `
 Problem: ${req.problem}

@@ -23,7 +23,7 @@ export default getRedisClient;
 
 const redis = getRedisClient();
 
-const DAILY_LIMIT = 50;
+// const DAILY_LIMIT = 50;
 
 type QuotaType = "hint" | "concept";
 
@@ -93,12 +93,14 @@ export async function getQuota(userId: string,type:QuotaType): Promise<QuotaInfo
 
   const hintsUsed = curr ?? 0;
 
-  return {
-    hintsUsedToday: hintsUsed,
-    hintsRemaining: Math.max(0, DAILY_LIMIT - hintsUsed),
-    dailyLimit: DAILY_LIMIT,
-    allowed: hintsUsed < DAILY_LIMIT,
-  };
+ const limit = QUOTA_CONFIG[type].limit;
+
+return {
+  hintsUsedToday: hintsUsed,
+  hintsRemaining: Math.max(0, limit - hintsUsed),
+  dailyLimit: limit,
+  allowed: hintsUsed < limit,
+};
 }
 
 //   export async function checkQuota(userId: string): Promise<RedisQuotaResult> {

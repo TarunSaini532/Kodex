@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
       {
         $group: {
           _id: null,
-          totalAttempts: { $sum: 1 }, // count every session
+          totalAttempted: { $sum: 1 }, // count every session
           totalSolved: { $sum: { $cond: ["$solved", 1, 0] } }, // count solved: true cond [if, then , else]
           totalHints: { $sum: "$hintsGiven" },
         },
@@ -100,7 +100,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(
       {
-        succes: true,
+        success: true,
         stats: {
           totalAttempted: stats.totalAttempted,
           totalSolved: stats.totalSolved,

@@ -87,10 +87,10 @@ export async function getConceptFromLibrarian(
   req: LibrarianRequest,
 ): Promise<Omit<LibrarianResponse, "quotaRemaining">> {
   const userMessage = `
-    Problem:${req.problemSlug}
-    Language:${req.language}
+  Problem: ${req.problemSlug}
+    Language: ${req.language}
 
-    Student's Correct Code:
+    Student's Current Code:
     \`\`\`${req.language}
 ${req.userCode || "// No code written yet"}
 \`\`\`
