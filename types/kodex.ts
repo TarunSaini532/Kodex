@@ -1,4 +1,4 @@
-export type BeltLevel = "white" | "yellow" | "green" | "blue" | "black";
+export type BeltLevel = "white" | "yellow" | "green" | "brown" | "black";
 
 export type DSAPattern =
   | "sliding window"
