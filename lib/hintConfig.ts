@@ -1,0 +1,30 @@
+export const HINT_CONFIG = {
+    analysisParalysisMintutes: 10,
+    codeFixerHintCount: 5,
+    wasEscalationCount: 3,
+    wasBottleneckCount: 2,
+    tlePivotCount: 2,
+    codeRealLengthMin: 50,
+      tleLargeCodeLineCount: 60,
+    minSecondsBetweenHints: 60,
+    gamingConsecutiveCount:2,
+    frustationMinutes: 40,
+    frustationMinHints: 3,
+    frustationInactivityMinutes: 6,
+    maxNudgesPerSession: 3,
+    dailyHintQuota: 50,
+    driftSimilarityThreshold: 0.6,
+    gamingCooldownSeconds: 120,
+    masteryMinSolves: 3,
+    masteryMaxAvgHints: 2,
+     belt: {
+    yellow: { minSolved: 10 },
+    green:  { minSolved: 30, maxAvgHints: 3 },
+    brown:  { minSolved: 60, maxAvgHints: 2, minMasteredPatterns: 3 },
+    black:  { minSolved: 100, maxAvgHints: 1.5, minMasteredPatterns: 5 },
+  },
+  recurringMistakesMaxCount: 10,
+  conversationHistoryRecentCount: 4,
+} as const;
+
+export type HintConfigKey = keyof typeof HINT_CONFIG;

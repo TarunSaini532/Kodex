@@ -82,6 +82,10 @@ const ProblemSchema = new Schema<IProblem>(
       type: String,
       default: "",
     },
+    siblingProblem: {
+      type: [String],
+      default: [],
+    },
     testCases: [
       {
         input: String,
@@ -109,7 +113,9 @@ const ProblemSchema = new Schema<IProblem>(
   { timestamps: true },
 );
 
-ProblemSchema.index({ topicOrder: 1, problemOrder: 1 });
+ProblemSchema.index({ topicOrder: 1, problemOrder: 1 }) ;
+ProblemSchema.index({ status: 1 });
+
 
 ProblemSchema.index({ difficulty: 1, pattern: 1 });
 

@@ -1,3 +1,4 @@
+import { BeltLevel } from "@/types/kodex";
 import mongoose, { Document, Schema } from "mongoose";
 
 export type KnownConcept =
@@ -21,6 +22,7 @@ export interface IUser extends Document {
   name: string;
   knownConcepts: KnownConcept[];
   experienceLevel: ExperienceLevel;
+  belt: BeltLevel;
   role: "student" | "admin";
   createdAt: Date;
   updatedAt: Date;
@@ -62,6 +64,11 @@ const UserSchema = new Schema<IUser>(
       default: [],
       // Empty array = complete beginner
       // Fine — Claude handles this gracefully
+    },
+    belt: {
+      type: String,
+      enum: ["white", "yellow", "green", "brown", "black"],
+      default: "white",
     },
     experienceLevel: {
       type: String,
