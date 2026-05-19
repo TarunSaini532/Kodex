@@ -3,10 +3,22 @@ import connectDB from "@/lib/mongodb";
 import Session from "@/models/Session";
 import User from "@/models/User";
 import { getTokenFromRequest } from "@/lib/auth";
-import { getHintFromClaude, Message } from "@/lib/claude";
+import { getHintFromGroq, Message } from "@/lib/claude";
 import { getQuota, incrementQuota } from "@/lib/redis";
 import Problem from "@/models/Problem";
 import { executeCode } from "@/lib/judge";
+
+const SYNTAX_PATTERNS = [
+  /how (do|does|can) (i|you|we)/i,
+  /what (is|are) the syntax/i,
+  /how to (write|declare|initialize|define)/i,
+  /\bsyntax\b/i,
+  /\bexample of\b/i,
+];
+
+function isSyntaxQuery(approach: string): boolean {
+  return SYNTAX_PATTERNS.some((p) => p.test(approach));
+}
 
 export async function POST(request: NextRequest) {
   try {
