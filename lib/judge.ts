@@ -1,3 +1,5 @@
+import { env } from "./env";
+
 const LANGUAGE_IDS: Record<string, number> = {
   javascript: 63,
   typescript: 74,
@@ -7,6 +9,7 @@ const LANGUAGE_IDS: Record<string, number> = {
   "c++": 54,
   c: 50,
 };
+
 
 const STATUS_MAP: Record<
   number,
@@ -72,7 +75,7 @@ function normalizeStatus(statusId: number): NormalizedStatus {
 }
 
 function getJudge0URL(): string {
-  const url = process.env.JUDGE0_URL;
+  const url = env.JUDGE0_URL;
   if (!url) throw new Error("JUDGE0_URL not set in environment");
   return url;
 }
