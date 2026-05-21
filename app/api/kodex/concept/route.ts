@@ -1,103 +1,81 @@
-import { getTokenFromRequest, verifyToken } from "@/lib/auth";
-import { getConceptFromLibrarian } from "@/lib/librarian";
-import { getQuota, incrementQuota } from "@/lib/redis";
 import { NextRequest, NextResponse } from "next/server";
+import { getTokenFromRequest } from "@/lib/auth";
+import { getQuota, incrementQuota } from "@/lib/redis";
+import { getConceptFromLibrarian } from "@/lib/librarian";
+import { validateConceptRequest } from "@/lib/validation";
+
+export async function GET(req: NextRequest) {
+  const payload = getTokenFromRequest(req);
+  if (!payload) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const quota = await getQuota(payload.userId, "concept");
+  return NextResponse.json({
+    quotaRemaining: quota.hintsRemaining,
+    dailyLimit: quota.dailyLimit,
+  });
+}
 
 export async function POST(req: NextRequest) {
+  const payload = getTokenFromRequest(req);
+  if (!payload) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  const { userId } = payload;
+
+  let rawBody: unknown;
   try {
-    const token = getTokenFromRequest(req);
-    if (!token) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Please log in to continue",
-        },
-        { status: 401 },
-      );
-    }
+    rawBody = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+  }
 
-    const quota = await getQuota(token.userId, "concept");
-    if (!quota.allowed) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "You have used all 5 hints for today. Come back tomorrow!",
-          hintsRemaining: 0,
-          hintsUsedToday: quota.hintsUsedToday,
-          exhausted: true,
-        },
-        { status: 429 },
-      ); //429: too many request
-    }
-    const body = await req.json();
-    const { question, userCode, problemSlug, language } = body;
+  const validation = validateConceptRequest(rawBody);
+  if (!validation.ok) {
+    return NextResponse.json({ error: validation.error }, { status: 400 });
+  }
 
-    if (!question || !userCode || !language) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "question, code and language are required",
-        },
-        { status: 400 },
-        // 400 = Bad Request — client sent incomplete data
-      );
-    }
-    const LibrarianResponse = await getConceptFromLibrarian({
+  const { question, userCode, problemSlug, language } = validation.data;
+
+  // Concept quota: 5/day — separate from hint quota (50/day)
+  const quota = await getQuota(userId, "concept");
+  if (!quota.allowed) {
+    return NextResponse.json(
+      {
+        error: "Daily concept quota exhausted",
+        quotaRemaining: 0,
+        message:
+          "You've used your 5 concept explanations for today. " +
+          "Use the Coach for hints — it will guide you through the logic.",
+      },
+      { status: 429 },
+    );
+  }
+
+  let result;
+  try {
+    result = await getConceptFromLibrarian({
       question,
       userCode,
       problemSlug,
       language,
     });
-
-    const newHintsUsed = await incrementQuota(token.userId, "concept");
-    const hintsRemaining = Math.max(0, 5 - newHintsUsed);
-
-    return NextResponse.json({
-      success: true,
-      explanation: LibrarianResponse.explanation,
-      hasDiagram: LibrarianResponse.hasDiagram,
-      mermaidCode: LibrarianResponse.mermaidCode,
-      quotaRemaining: hintsRemaining,
-    });
-  } catch (error) {
-    console.error("Cocncept API error:", error);
+  } catch (err) {
+    console.error("[concept] Librarian failed:", err);
     return NextResponse.json(
-      {
-        success: false,
-        message: "Something went wrong. Please try again.",
-      },
-      { status: 500 },
+      { error: "Failed to get explanation — please try again" },
+      { status: 503 },
     );
   }
-}
 
-export async function GET(request: NextRequest) {
-  try {
-    const tokenPayload = getTokenFromRequest(request);
+  const used = await incrementQuota(userId, "concept");
+  const newQuotaRemaining = Math.max(0, quota.dailyLimit - used);
 
-    if (!tokenPayload) {
-      return NextResponse.json(
-        { success: false, message: "Please log in" },
-        { status: 401 },
-      );
-    }
-
-    const quota = await getQuota(tokenPayload.userId, "concept");
-
-    return NextResponse.json(
-      {
-        success: true,
-        hintsRemaining: quota.hintsRemaining,
-        hintsUsedToday: quota.hintsUsedToday,
-        dailyLimit: quota.dailyLimit,
-      },
-      { status: 200 },
-    );
-  } catch (error) {
-    console.error("Quota status error:", error);
-    return NextResponse.json(
-      { success: false, message: "Something went wrong" },
-      { status: 500 },
-    );
-  }
+  return NextResponse.json({
+    explanation: result.explanation,
+    hasDiagram: result.hasDiagram,
+    mermaidCode: result.mermaidCode,
+    quotaRemaining: newQuotaRemaining,
+  });
 }

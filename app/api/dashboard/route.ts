@@ -1,126 +1,119 @@
-import { getTokenFromRequest } from "@/lib/auth";
-import connectDB from "@/lib/mongodb";
-import Session from "@/models/Session";
 import { NextRequest, NextResponse } from "next/server";
+import connectDB from "@/lib/mongodb";
+import User from "@/models/User";
+import Session from "@/models/Session";
+import StudentProfile from "@/models/StudentProfile";
+import { getTokenFromRequest } from "@/lib/auth";
 import mongoose from "mongoose";
 
-function masteryScore(avgHints: number): number {
-  if (avgHints === 0) return 100;
-  if (avgHints <= 1) return 80;
-  if (avgHints <= 2) return 60;
-  if (avgHints <= 3) return 40;
-  return 20;
-}
+export async function GET(req: NextRequest) {
+  const payload = getTokenFromRequest(req);
+  if (!payload) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  const { userId } = payload;
 
-export async function GET(request: NextRequest) {
-  try {
-    const token = getTokenFromRequest(request);
-    if (!token) {
-      return NextResponse.json(
-        { success: false, message: "Please log in" },
-        { status: 401 },
-      );
-    }
+  await connectDB();
 
-    await connectDB();
+  const userObjectId = new mongoose.Types.ObjectId(userId);
 
-    //basic stats
-    const basicStats = await Session.aggregate([
-      {
-        $match: {
-          userId: new mongoose.Types.ObjectId(token.userId),
-        },
-      },
+  const [user, profile, sessionStats, recentSessions] = await Promise.all([
+    User.findById(userId).select("-password").lean(),
+
+    StudentProfile.findOne({ userId: userObjectId }).lean(),
+
+    Session.aggregate([
+      { $match: { userId: userObjectId } },
       {
         $group: {
           _id: null,
-          totalAttempted: { $sum: 1 }, // count every session
-          totalSolved: { $sum: { $cond: ["$solved", 1, 0] } }, // count solved: true cond [if, then , else]
-          totalHints: { $sum: "$hintsGiven" },
+          totalAttempted: { $sum: 1 },
+          totalSolved: { $sum: { $cond: ["$solved", 1, 0] } },
+          totalHintsUsed: { $sum: "$hintsGiven" },
+          avgHintsPerProblem: { $avg: "$hintsGiven" },
         },
       },
-    ]);
+    ]),
 
-    const stats = basicStats[0] ?? {
-      totalAttempted: 0,
-      totalSolved: 0,
-      totalHints: 0,
-    };
-
-    const avgHintsPerProblem =
-      stats.totalAttempted > 0
-        ? (stats.totalHints / stats.totalAttempted).toFixed(2)
-        : 0;
-
-    // radar chart
-    const patternStats = await Session.aggregate([
-      {
-        $match: {
-          userId: new mongoose.Types.ObjectId(token.userId),
-        },
-      },
-      {
-        $group: {
-          _id: "$pattern",
-          attempted: { $sum: 1 },
-          solved: { $sum: { $cond: ["$solved", 1, 0] } },
-          totalHints: { $sum: "$hintsGiven" },
-          avgHints: { $avg: "$hintsGiven" },
-        },
-      },
-      //shape the object
-      {
-        $project: {
-          pattern: "$_id",
-          attempted: 1,
-          solved: 1,
-          avgHints: { $round: ["$avgHints", 2] },
-        },
-      },
-      {
-        $sort: { pattern: 1 },
-      },
-    ]);
-
-    const perPatternMastery = patternStats.map((p: any) => ({
-      pattern: p.pattern,
-      attempted: p.attempted,
-      solved: p.solved,
-      avgHints: p.avgHints,
-      mastery: masteryScore(p.avgHints),
-    }));
-
-    const revisitSession = await Session.find({
-      userId: token.userId,
-      status: "revisit",
-    })
-      .select("problemSlug hintsGiven updatedAt")
+    Session.find({ userId: userObjectId })
       .sort({ updatedAt: -1 })
-      .limit(10);
+      .limit(5)
+      .select("problemSlug solved status hintsGiven updatedAt patternCard")
+      .lean(),
+  ]);
 
-    return NextResponse.json(
-      {
-        success: true,
-        stats: {
-          totalAttempted: stats.totalAttempted,
-          totalSolved: stats.totalSolved,
-          totalHints: stats.totalHints,
-          avgHintsPerProblem,
-          solveRate:
-            stats.totalAttempted > 0
-              ? +((stats.totalSolved / stats.totalAttempted) * 100).toFixed(1)
-              : 0,
-        },
-        perPatternMastery,
-        revisit: revisitSession,
-      },
-      { status: 200 },
-    );
-  } catch (error) {
-    console.error("[Dashboard] error:", error);
-    return NextResponse.json(
-      { success: false, message: "Something went wrong" },
-      { status: 500 },
-    );
+  if (!user) {
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
+
+  const stats = sessionStats[0] ?? {
+    totalAttempted: 0,
+    totalSolved: 0,
+    totalHintsUsed: 0,
+    avgHintsPerProblem: 0,
+  };
+
+  const patternBreakdown: Record<
+    string,
+    {
+      attempted: number;
+      solved: number;
+      avgHints: number;
+    }
+  > = {};
+
+  if (profile?.patternData) {
+    for (const [pattern, data] of profile.patternData) {
+      patternBreakdown[pattern] = {
+        attempted: data.attempted,
+        solved: data.solved,
+        avgHints: data.avgHintsNeeded,
+      };
+    }
+  }
+
+  const today = new Date();
+  const dueTodayRevisits =
+    profile?.revisitQueue?.filter((r) => new Date(r.dueAt) <= today) ?? [];
+
+  // Bug fixed: was "succes: true"
+  return NextResponse.json({
+    success: true,
+    dashboard: {
+      user: {
+        name: user.name,
+        email: user.email,
+        belt: user.belt,
+        experienceLevel: user.experienceLevel,
+      },
+      stats: {
+        totalAttempted: stats.totalAttempted,
+        totalSolved: stats.totalSolved,
+        totalHintsUsed: stats.totalHintsUsed,
+        avgHintsPerProblem:
+          Math.round((stats.avgHintsPerProblem ?? 0) * 10) / 10,
+        solveRate:
+          stats.totalAttempted > 0
+            ? Math.round((stats.totalSolved / stats.totalAttempted) * 100)
+            : 0,
+      },
+      patternBreakdown,
+      strongPatterns: profile?.strongPatterns ?? [],
+      recurringMistakes: profile?.recurringMistakes?.slice(0, 3) ?? [],
+      recentSessions: recentSessions.map((s) => ({
+        problemSlug: s.problemSlug,
+        solved: s.solved,
+        status: s.status,
+        hintsGiven: s.hintsGiven,
+        patternCard: s.patternCard,
+        lastActivity: s.updatedAt,
+      })),
+      revisitsDueToday: dueTodayRevisits.map((r) => ({
+        problemSlug: r.problemSlug,
+        siblingSlug: r.siblingSlug,
+        revisitNumber: r.revisitNumber,
+        dueAt: r.dueAt,
+      })),
+    },
+  });
 }
