@@ -113,13 +113,12 @@ const ProblemSchema = new Schema<IProblem>(
   { timestamps: true },
 );
 
-ProblemSchema.index({ topicOrder: 1, problemOrder: 1 }) ;
+ProblemSchema.index({ topicOrder: 1, problemOrder: 1 });
 ProblemSchema.index({ status: 1 });
-
 
 ProblemSchema.index({ difficulty: 1, pattern: 1 });
 
-const Problem =
+const Problem: mongoose.Model<IProblem> =
   mongoose.models.Problem || mongoose.model<IProblem>("Problem", ProblemSchema);
 
 export default Problem;

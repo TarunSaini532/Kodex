@@ -21,7 +21,7 @@ export interface ISession extends Document {
   structuredReveal: IStructuredReveal | null;
   tradeoffQuestion: string | null;
   beltAtSessionStart: BeltLevel;
-  constraintCoachDone: Boolean;
+  constraintCoachDone: boolean;
   comprehensionCoachDone: boolean;
   approachType: "brute_force" | "optimal" | null;
   currentCodeHash: string;

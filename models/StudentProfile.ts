@@ -5,7 +5,7 @@ export interface PatternStat {
   attempted: number;
   solved: number;
   avgHintsNeeded: number;
-  lastMiconception: string | null;
+  lastMisconception: string | null;
   lastAttemptedAt: Date;
 }
 
@@ -35,7 +35,7 @@ const PatternStatSchema = new Schema<PatternStat>(
     attempted: { type: Number, default: 0 },
     solved: { type: Number, default: 0 },
     avgHintsNeeded: { type: Number, default: 0 },
-    lastMiconception: { type: String, default: null },
+    lastMisconception: { type: String, default: null },
     lastAttemptedAt: { type: Date, default: Date.now },
   },
   { _id: false },

@@ -27,7 +27,7 @@ export interface GroqRequest {
   hintsGiven: number;
   approachValidated: boolean;
   constraintCoachDone: boolean;
-  comprehensionCheckDone: boolean;
+  comprehensionCoachDone: boolean;
   beltAtSessionStart: BeltLevel;
 
   hintType: HintType;
@@ -525,7 +525,7 @@ function selectPrompt(req: GroqRequest): string {
     !isExpertBelt &&
     (!req.approachValidated ||
       !req.constraintCoachDone ||
-      !req.comprehensionCheckDone);
+      !req.comprehensionCoachDone);
 
   if (inGatekeeperPhase) return PROMPT_A;
   if (req.hintsGiven >= 5) return PROMPT_C;
@@ -570,7 +570,7 @@ SESSION STATE:
   Hints given: ${req.hintsGiven}
   Approach validated: ${req.approachValidated}
   Constraint coach done: ${req.constraintCoachDone}
-  Comprehension check done: ${req.comprehensionCheckDone}
+  Comprehension check done: ${req.comprehensionCoachDone}
   hintType (your routing signal): ${req.hintType}
   isFrustrated: ${req.isFrustrated}
   Solved: ${req.solved}
@@ -597,7 +597,7 @@ ${req.profileContext || "No profile data yet — cold start."}
 ────────────────────────────────────────
 GATEKEEPER FLAGS:
   constraintCoachDone: ${req.constraintCoachDone}
-  comprehensionCheckDone: ${req.comprehensionCheckDone}
+  comprehensionCheckDone: ${req.comprehensionCoachDone}
 `.trim();
 }
 

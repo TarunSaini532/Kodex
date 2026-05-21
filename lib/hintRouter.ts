@@ -17,7 +17,7 @@ interface SessionSnapshot {
   constraintsCoachDone: boolean;
   comprehensionCoachDone: boolean;
   lastRunPassed: boolean;
-  hiddentTestFailed: boolean;
+  hiddenTestFailed: boolean;
   tleCount: number;
   consecutiveSignalCount?: Map<string, number>;
   isFrustated: boolean;
@@ -39,7 +39,7 @@ interface RouterParams {
   studentApproach: string;
   problem: Problem;
   elapsedMinutes: number;
-  lastExecution: ExecutionResult;
+  lastExecution: ExecutionResult|null;
 }
 
 function realCodeLength(code: string): number {
@@ -237,7 +237,7 @@ export async function determineHintType(
       }
       return { type: "dry_run", quotaCost: 1, hasPendingTLE };
     }
-    if (session.lastRunPassed && session.hiddentTestFailed) {
+    if (session.lastRunPassed && session.hiddenTestFailed) {
       return {
         type: "local_success_global_failure",
         quotaCost: 1,
@@ -264,7 +264,7 @@ export async function determineHintType(
   }
   // ── PRIORITY 6: Tests Passing ────────────────────────────
 
-  if (session.lastRunPassed && !session.hiddentTestFailed) {
+  if (session.lastRunPassed && !session.hiddenTestFailed) {
     return { type: "passing_wants_hint", quotaCost: 1 };
   }
   // ── PRIORITY 7: Deep Session ─────────────────────────────

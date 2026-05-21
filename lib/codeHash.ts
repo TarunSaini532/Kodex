@@ -34,7 +34,7 @@ export function detectContextDrift(
   return similarityRatio < 0.6;
 }
 
-export function codeChangeMeaningfully(
+export function codeChangedMeaningfully(
   prevHash: string,
   currCode: string,
 ): boolean {
